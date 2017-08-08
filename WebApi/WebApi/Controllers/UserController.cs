@@ -12,12 +12,11 @@ namespace WebApi.Controllers
     public class UserController : ApiController
     {
         private ApiDemoDbContext dbContext = new ApiDemoDbContext();
+        
         // GET api/<controller>
         public string Get()
         {
             List<User> users = dbContext.Users.ToList();
-
-            Newtonsoft.Json.JsonSerializer js = new Newtonsoft.Json.JsonSerializer();
 
             return JsonConvert.SerializeObject(users);
         }
