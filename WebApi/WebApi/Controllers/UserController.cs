@@ -17,8 +17,6 @@ namespace WebApi.Controllers
         {
             List<User> users = dbContext.Users.ToList();
 
-            Newtonsoft.Json.JsonSerializer js = new Newtonsoft.Json.JsonSerializer();
-
             return JsonConvert.SerializeObject(users);
         }
 
