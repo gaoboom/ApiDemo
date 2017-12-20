@@ -12,6 +12,7 @@ namespace WebApi.Controllers
     public class UserController : ApiController
     {
         private ApiDemoDbContext dbContext = new ApiDemoDbContext();
+        
         // GET api/<controller>
         public string Get()
         {

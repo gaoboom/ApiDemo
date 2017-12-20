@@ -23,14 +23,14 @@ namespace WebApi
         {
             await Task.Factory.StartNew(() => context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" }));
             //开始对用户名和密码进行数据校验
-            if(context.UserName=="admin" && context.Password=="123456")
+            ApiDemoDbContext dbContext = new ApiDemoDbContext();
+            User user = dbContext.Users.FirstOrDefault(u => u.UserName == context.UserName && u.UserPassword == context.Password);
+            if (user==null)
             {
-                User identityUser = new User { UserID = Guid.NewGuid(), UserName = "admin", UserPassword = "123456", UserRole = 1 };
-            }
-            else
-            {
+                //未找到该用户，报错返回
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
+
             }
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("sub", context.UserName));
