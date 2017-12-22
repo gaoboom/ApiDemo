@@ -14,11 +14,11 @@ namespace WebApi.Controllers
         private ApiDemoDbContext dbContext = new ApiDemoDbContext();
         
         // GET api/<controller>
-        public string Get()
+        public List<User> Get()
         {
             List<User> users = dbContext.Users.ToList();
 
-            return JsonConvert.SerializeObject(users);
+            return users;
         }
 
         // GET api/<controller>/5
