@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using WebApi.EnumTypes;
 using WebApi.Models;
 
 namespace WebApi
@@ -57,8 +58,9 @@ namespace WebApi
 
             }
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, Enum.GetName(typeof(UserRoleTypes),user.UserRole)));
+            
             context.Validated(identity);
         }
 

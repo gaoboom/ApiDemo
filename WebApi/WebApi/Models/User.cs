@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebApi.EnumTypes;
 
 namespace WebApi.Models
 {
@@ -15,8 +16,8 @@ namespace WebApi.Models
 
         /// <summary>
         /// 用户角色，此处应为枚举类型
-        /// 0-未分配角色 1-普通用户 2-管理员用户
+        /// 0-匿名用户 1-常规个人用户 2-常规企业用户
         /// </summary>
-        public int UserRole { get; set; }
+        public UserRoleTypes UserRole { get; set; }
     }
 }
