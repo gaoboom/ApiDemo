@@ -60,7 +60,7 @@ namespace WebApi
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Role, Enum.GetName(typeof(UserRoleTypes),user.UserRole)));
-            
+            identity.AddClaim(new Claim("UserID", user.UserID.ToString()));
             context.Validated(identity);
         }
 

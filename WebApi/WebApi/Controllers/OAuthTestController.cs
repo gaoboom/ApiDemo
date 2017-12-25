@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using WebApi.DtoModels;
+using WebApi.EnumTypes;
 
 namespace WebApi.Controllers
 {
@@ -13,11 +16,26 @@ namespace WebApi.Controllers
         [Authorize(Roles = "EnterpriseUser,PersonalUser")]
         public IEnumerable<string> Get()
         {
-            var user = User.Identity;
+            var user = (ClaimsIdentity)User.Identity;
             var a = user.AuthenticationType;
             var b = user.IsAuthenticated;
             var c = user.Name;
+            var d = user.FindFirst("UserID").Value;
+            
+            
             return new string[] { "Hello", "World" };
+        }
+
+        [Authorize(Roles = "EnterpriseUser,PersonalUser")]
+        public DtoUser GetUserInfoByAccessToken()
+        {
+            var user = (ClaimsIdentity)User.Identity;
+            Guid userId = Guid.Parse(user.FindFirst("UserID").Value);
+            DtoUser u = new DtoUser();
+            u.UserID = userId;
+            u.UserName = user.Name;
+            u.UserRole = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            return u;
         }
 
         // GET api/<controller>/5
