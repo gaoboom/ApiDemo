@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security.OAuth;
+﻿using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,11 +58,41 @@ namespace WebApi
                 return;
 
             }
+            //添加授权后的身份声明
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Role, Enum.GetName(typeof(UserRoleTypes),user.UserRole)));
             identity.AddClaim(new Claim("UserID", user.UserID.ToString()));
-            context.Validated(identity);
+            //添加获取token时的额外返回信息
+            var props = new AuthenticationProperties(new Dictionary<string, string>
+                {
+                    {
+                        "surname", "Smith"
+                    },
+                    {
+                        "age", "20"
+                    },
+                    {
+                    "gender", "Male"
+                    }
+                });
+            var ticket = new AuthenticationTicket(identity, props);
+            context.Validated(ticket);
+        }
+
+        /// <summary>
+        /// 重载获取Token方法
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+        {
+            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+            {
+                context.AdditionalResponseParameters.Add(property.Key, property.Value);
+            }
+
+            return Task.FromResult<object>(null);
         }
 
     }
