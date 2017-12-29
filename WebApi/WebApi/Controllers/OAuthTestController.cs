@@ -13,7 +13,7 @@ namespace WebApi.Controllers
     public class OAuthTestController : ApiController
     {
         // GET api/<controller>
-        [Authorize(Roles = "EnterpriseUser,PersonalUser")]
+        [Authorize]
         public IEnumerable<string> Get()
         {
             var user = (ClaimsIdentity)User.Identity;

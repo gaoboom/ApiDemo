@@ -65,17 +65,11 @@ namespace WebApi
             identity.AddClaim(new Claim("UserID", user.UserID.ToString()));
             //添加获取token时的额外返回信息
             var props = new AuthenticationProperties(new Dictionary<string, string>
-                {
-                    {
-                        "surname", "Smith"
-                    },
-                    {
-                        "age", "20"
-                    },
-                    {
-                    "gender", "Male"
-                    }
-                });
+            {
+                {"UserID",user.UserID.ToString() },
+                {"UserName", user.UserName},
+                {"UserRole", Enum.GetName(typeof(UserRoleTypes),user.UserRole)},
+            });
             var ticket = new AuthenticationTicket(identity, props);
             context.Validated(ticket);
         }
